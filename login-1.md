@@ -114,6 +114,8 @@ echo htmlspecialchars ( $new,  ENT_QUOTES,  "UTF-8");
 ?>
 ```
 
+```
+
 `<a href='test'>Test</a>` が `&lt;a href=&#039;test &#039;&gt;Test&lt;/a &gt;` に変換されますが、ブラウザには `<a href='test'>Test</a>` と表示されます。
 
 ## classes/dbdata.php
