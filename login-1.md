@@ -2,15 +2,15 @@
 sort: 2
 ---
 
-# ログイン認証①
+# ログイン認証(新規登録機能の実装)
 
-まずは以下の5つを作ります。
+まずは以下の5つを実装します。
 
-1. register.html・・・新規ユーザー登録を行うため、ユーザーID、パスワード、氏名を入力する画面
-2. util.php・・・画面共通で利用するエスケープ関数をまとめたファイル
-3. dbdata.php・・・データベースの基本事項を定義する
-4. user.php(登録用メソッド追加)・・・認証処理や新規ユーザの登録を行う
-5. register.php・・・新規ユーザの登録処理結果を表示する画面
+1. `register.html`・・・新規ユーザー登録を行うため、ユーザーID、パスワード、氏名を入力する画面
+2. `util.php`・・・画面共通で利用するエスケープ関数をまとめたファイル
+3. `dbdata.php`・・・データベースの基本事項を定義する
+4. `user.php`(登録用メソッド追加)・・・認証処理や新規ユーザの登録を行う
+5. `register.php`・・・新規ユーザの登録処理結果を表示する画面
 
 ## 新規登録画面(register.html)
 
@@ -118,12 +118,14 @@ echo htmlspecialchars ( $new,  ENT_QUOTES,  "UTF-8");
 
 `<a href='test'>Test</a>` が `&lt;a href=&#039;test &#039;&gt;Test&lt;/a &gt;` に変換されますが、ブラウザには `<a href='test'>Test</a>` と表示されます。
 
-## classes/dbdata.php
+## DbDataクラスの作成
 
 データベースの基本事項に関するクラスが定義されているクラスです。
-前章の[オブジェクト指向プログラミング①](../object-i/README.md)のときとほぼ同じですが、今回は`exec`メソッドの戻り値を判定に利用するため、その部分を追記しています。
+前章の[オブジェクト指向]([../object-i/README.md](https://2025web1.github.io/08-object/dbdata.html#dbdata%E3%82%AF%E3%83%A9%E3%82%B9))のときとほぼ同じですが、今回は`exec`メソッドの戻り値を判定に利用するため、その部分を追記しています。
 
-なお、dbdata.phpのファイルは、`public`内に`classes`というディレクトリを作成し、そこに追加してください。
+なお、`dbdata.php`のファイルは、`public`内に`classes`というディレクトリを作成し、そこに追加してください。
+
+**classes/dbdata.php**
 
 ```php
 <?php
@@ -152,7 +154,7 @@ class DbData
     }
 
     // SELECT文実行用のqueryメソッド ・・・このメソッドはユーザー定義関数
-    protected function query($sql, $array_params)
+    protected function query($sql, $array_params): PDOStatement | false
     {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($array_params);
@@ -162,7 +164,7 @@ class DbData
     }
 
     // INSERT、UPDATE、DELETE文実行用のメソッド ・・・このメソッドもユーザー定義関数
-    protected function exec($sql, $array_params)
+    protected function exec($sql, $array_params): bool
     {
         $stmt = $this->pdo->prepare($sql);
         // 成功:true、失敗:false
@@ -173,15 +175,17 @@ class DbData
 }
 ```
 
-## classes/user.php
+## Userクラスの登録用メソッド追加
 
-次に、クラス`DbData`を継承する、クラス`User`を定義するPHPファイル「user.php」 を作成します。
+次に、クラス`DbData`を継承する、クラス`User`を定義するPHPファイル`user.php`を作成します。
 まずクラス`User`に、新規ユーザー登録処理を行う`signUp`メソッドを追加します。
 
-なお、dbdata.php同様、user.phpも`public`内の`classes`というディレクトリに作成してください。
+なお、`dbdata.php`同様、`user.php`も`public`内の`classes`というディレクトリに作成してください。
 
 **一部のソースコードが穴埋めになっている**ので、それぞれの箇所に適切なコードを追記してください。
 なお、穴埋めが必要な箇所のコメントに **(穴埋め)** と記載しています。
+
+**classes/user.php**
 
 ```php
 <?php
@@ -192,7 +196,7 @@ require_once
 class 
 {
     // ユーザー登録処理
-    public function signUp($userId, $password, $userName)
+    public function signUp($userId, $password, $userName): string
     {
         // userIdを条件とするSELECT文の定義(穴埋め)
         $sql = 
@@ -222,21 +226,27 @@ class
 }
 ```
 
-①`if ($result) { `: `$result`には`signUp`メソッドの戻り値が格納されます。`signUp`の戻り値は、`fetch`メソッドの戻り値になります。
+①`if ($result) {`: `$result`には`signUp`メソッドの戻り値が格納されます。
+`signUp`の戻り値は、`fetch`メソッドの戻り値になります。
 
-`fetch`メソッドの戻り値をif分の条件に使うと、データが取得できた場合は`true`、取得できなかった場合は`false`になります。
+`fetch`メソッドの戻り値を`if`文の条件に使うと、データが取得できた場合は`true`、取得できなかった場合は`false`になります。
 
-## register.php
+## 登録結果画面(register.php)
 
 **一部のソースコードが穴埋めになっている**ので、それぞれの箇所に適切なコードを追記してください。
 なお、穴埋めが必要な箇所のコメントに **(穴埋め)** と記載しています。
 
 ```php
 <?php
-// 送られてきたデータを受けとる(穴埋め)
-$userId   = 
-$password = 
-$userName = 
+// 送られてきたデータの有効性をチェックする ①
+if (!isset($_POST['userId']) || !isset($_POST['password']) || !isset($_POST['userName'])) {
+    $result = '未入力の項目があります。<br>全ての項目を入力してください。';
+}else{
+
+// 送られてきたデータを受けとる
+$userId   = $_POST['userId'];
+$password = $_POST['password'];
+$userName = $_POST['userName'];
 
 // Userクラスを利用するため、user.phpクラスを読み込む(穴埋め)
 require_once
@@ -247,6 +257,7 @@ $result =
 
 // 共通するデータ・関数を定義したPHPファイルを読み込む
 require_once  __DIR__  .  '/util.php';
+}
 ?>
 
 <!DOCTYPE html>
@@ -271,7 +282,7 @@ require_once  __DIR__  .  '/util.php';
             <table id='regiTable'>
                 <tr>
                     <th>ユーザーID</th>
-                    <td><?= h($userId) ?></td> <!-- ① -->
+                    <td><?= h($userId) ?></td> <!-- ② -->
                 </tr>
                 <tr>
                     <th>パスワード</th>
@@ -300,10 +311,19 @@ require_once  __DIR__  .  '/util.php';
 </html>
 ```
 
-①: `<?=  ?>` は、`<?php echo ?>`の省略形であり、htmlの中に部分的にPHPの変数を埋め込みたい時に便利な書き方です。
+**【解説】**
+
+①`if (!isset($_POST['userId']) || !isset($_POST['password']) || !isset($_POST['userName']))`:<br>
+`isset()`は、変数が存在するかどうかを確認する関数です。
+`!isset()`は、変数が存在しない場合に`true`を返します。
+クライアント側でも`required`属性をつけているので、通常はここに来ることはありません。
+ただし、`register.html`のフォームに直接URLを入力してアクセスした場合など、POSTデータが送られてこない場合に備えて、ここでも二重でチェックをしています。
+
+②`<?=  ?>`:<br> 
+`<?php echo ?>`の省略形であり、htmlの中に部分的にPHPの変数を埋め込みたい時に便利な書き方です。
 また、`h($userId)` は、`util.php` で定義したエスケープ処理用関数です。
 
-完成させた後、ブラウザで「register.html」を表示し、以下のデータを入力後「登録する」ボタンを押し、無事に登録されたことを確認してください。
+完成させた後、ブラウザで`register.html`を表示し、以下のデータを入力後「登録する」ボタンを押し、無事に登録されたことを確認してください。
 
 - ユーザーID: kobe
 - パスワード: denshi
@@ -312,6 +332,6 @@ require_once  __DIR__  .  '/util.php';
 ![](./images/register_html_display.png)
 ![](./images/register_php_display.png)
 
-また、もう一度「register.html」で同じユーザーを登録しようとすると、以下のように登録が失敗することも確認してください。
+また、もう一度`register.html`で同じユーザーを登録しようとすると、以下のように登録が失敗することも確認してください。
 
 ![](./images/register_php_display_error.png)
