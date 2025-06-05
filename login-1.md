@@ -81,13 +81,15 @@ function h($data)
 }
 ```
 
-```note
+**【解説】**
+
 フォームから送られてきた値や、データベースから取り出した値をブラウザ上に表示する際に使用します。クロスサイトスクリプティングなど悪意のあるコードの埋め込みを防ぐことができます。(エスケープやサニタイズと呼ばれます)
 
 構文:
-`php
+
+```php
 htmlspecialchars ( エスケープする文字列, エスケープの種類, 文字コード );
-`
+```
 
 第1引数：エスケープする文字列は、ブラウザ上に表示する値を指定します。<br> 
 第2引数：エスケープの種類はいくつかあるが、「ENT_QUOTES」を指定します。<br>
@@ -105,15 +107,13 @@ htmlspecialchars ( エスケープする文字列, エスケープの種類, 文
 
 【使用例】
 
-`php
+```php
 <?php
 
 $new = "<a href='test'>Test</a>";
 echo htmlspecialchars ( $new,  ENT_QUOTES,  "UTF-8");
 
 ?>
-`
-
 ```
 
 `<a href='test'>Test</a>` が `&lt;a href=&#039;test &#039;&gt;Test&lt;/a &gt;` に変換されますが、ブラウザには `<a href='test'>Test</a>` と表示されます。
