@@ -109,7 +109,7 @@ public function authUser($userId, $password): array|false
 <?php
 // 送られてきたデータの有効性をチェックする(穴埋め)
 if (!isset($_POST['userId']) || !isset($_POST['password'])) {
-    $error = '未入力の項目があります。<br>全ての項目を入力してください。';
+    $error = '未入力の項目があります。全ての項目を入力してください。';
 }else{
     // 送られてきたユーザーIDとパスワードを受け取る(穴埋め)
     $userId   = 
@@ -131,6 +131,7 @@ if (!isset($_POST['userId']) || !isset($_POST['password'])) {
         header('Location: welcome.php');
         exit();
     }
+    $error = 'ユーザーID、パスワードを確認してください。';
 }
 ?>
 
@@ -148,9 +149,9 @@ if (!isset($_POST['userId']) || !isset($_POST['password'])) {
 
 <body>
     <div id="main">
-        <h2><?= $error ?></h2>
+        <h2>ログインに失敗しました</h2>
         <hr><br>
-        ユーザーID、パスワードを確認してください。
+        <p><?= $error ?></p>
         <p><a href='login.html'>ログインページへ</a></p>
     </div>
 </body>

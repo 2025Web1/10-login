@@ -240,7 +240,7 @@ class
 <?php
 // 送られてきたデータの有効性をチェックする ①
 if (!isset($_POST['userId']) || !isset($_POST['password']) || !isset($_POST['userName'])) {
-    $result = '未入力の項目があります。<br>全ての項目を入力してください。';
+    $result = '未入力の項目があります。全ての項目を入力してください。';
 }else{
 
 // 送られてきたデータを受けとる
