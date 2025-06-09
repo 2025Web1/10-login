@@ -154,7 +154,7 @@ class DbData
     }
 
     // SELECT文実行用のqueryメソッド ・・・このメソッドはユーザー定義関数
-    protected function query($sql, $array_params): PDOStatement | false
+    protected function query(string $sql, array $array_params): PDOStatement | false
     {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($array_params);
@@ -164,7 +164,7 @@ class DbData
     }
 
     // INSERT、UPDATE、DELETE文実行用のメソッド ・・・このメソッドもユーザー定義関数
-    protected function exec($sql, $array_params): bool
+    protected function exec(string $sql, array $array_params): bool
     {
         $stmt = $this->pdo->prepare($sql);
         // 成功:true、失敗:false
@@ -175,7 +175,7 @@ class DbData
 }
 ```
 
-## Userクラスの登録用メソッド追加
+## Userクラスの作成と登録用メソッド追加
 
 次に、クラス`DbData`を継承する、クラス`User`を定義するPHPファイル`user.php`を作成します。
 まずクラス`User`に、新規ユーザー登録処理を行う`signUp`メソッドを追加します。
@@ -196,7 +196,7 @@ require_once
 class 
 {
     // ユーザー登録処理
-    public function signUp($userId, $password, $userName): string
+    public function signUp(string $userId, string $password, string $userName): string
     {
         // userIdを条件とするSELECT文の定義(穴埋め)
         $sql = 

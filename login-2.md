@@ -87,7 +87,7 @@ public
 // ================
 
 // ログイン認証処理
-public function authUser($userId, $password): array|false
+public function authUser(string $userId, string $password): array|false
 {
     // SQL文を定義(穴埋め)
     // ※ヒント:ユーザーIDとパスワードを条件にユーザー情報を取得
