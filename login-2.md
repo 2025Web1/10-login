@@ -107,8 +107,8 @@ public function authUser(string $userId, string $password): array|false
 
 ```php
 <?php
-// 送られてきたデータの有効性をチェックする(穴埋め)
-if (!isset($_POST['userId']) || !isset($_POST['password'])) {
+// 送られてきたデータ(ユーザーIDとパスワード)の有効性をチェックする(バリデーション)(穴埋め)
+if (empty(trim(                ) || empty(trim(                   )) {
     $error = '未入力の項目があります。全ての項目を入力してください。';
 }else{
     // 送られてきたユーザーIDとパスワードを受け取る(穴埋め)

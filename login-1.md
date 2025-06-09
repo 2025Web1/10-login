@@ -164,7 +164,7 @@ class DbData
     }
 
     // INSERT、UPDATE、DELETE文実行用のメソッド ・・・このメソッドもユーザー定義関数
-    protected function exec(string $sql, array $array_params): bool
+    protected function exec(string $sql, array $array_params): PDOStatement
     {
         $stmt = $this->pdo->prepare($sql);
         // 成功:true、失敗:false
@@ -238,8 +238,8 @@ class
 
 ```php
 <?php
-// 送られてきたデータの有効性をチェックする ①
-if (!isset($_POST['userId']) || !isset($_POST['password']) || !isset($_POST['userName'])) {
+// 送られてきたデータの有効性をチェックする(バリデーション) ①
+if (empty(trim($_POST['userId'])) || empty(trim($_POST['password'])) || empty(trim($_POST['userName']))) {
     $result = '未入力の項目があります。全ての項目を入力してください。';
 }else{
 
@@ -313,11 +313,23 @@ if (!isset($_POST['userId']) || !isset($_POST['password']) || !isset($_POST['use
 
 **【解説】**
 
-①`if (!isset($_POST['userId']) || !isset($_POST['password']) || !isset($_POST['userName']))`:<br>
-`isset()`は、変数が存在するかどうかを確認する関数です。
-`!isset()`は、変数が存在しない場合に`true`を返します。
-クライアント側でも`required`属性をつけているので、通常はここに来ることはありません。
-ただし、`register.html`のフォームに直接URLを入力してアクセスした場合など、POSTデータが送られてこない場合に備えて、ここでも二重でチェックをしています。
+①`if (empty(trim($_POST['userId'])) || empty(trim($_POST['password'])) || empty(trim($_POST['userName'])))`:<br>
+`empty()`で変数が空であるかをチェックしています。
+`trim()`は、文字列の前後の空白を取り除く関数です。
+`trim()`を使うことで、ユーザーが意図せずスペースを入力してしまった場合でも、空文字として扱うことができます。
+
+```tip
+### ◆バリデーションのお作法と種類
+バリデーションとは、ユーザーが入力したデータが正しいかどうかをチェックすることです。
+バリデーションは、クライアント側とサーバ側の両方で行うことが一般的です。
+今回は未入力チェックで、クライアント側(HTML)で`required`属性を、サーバ側(PHP)で`empty()`関数を使ってチェックしています。
+
+また、本章では未入力チェックのみを行っていますが、他のバリデーションも行うことが推奨されます。以下は一般的なバリデーションの例を示します。
+- **形式チェック**: メールアドレスや電話番号の形式が正しいかをチェックします。
+- **長さチェック**: 入力文字数が適切な範囲内にあるかを確認します。
+- **値の範囲チェック**: 数値が特定の範囲内にあるかを確認します。
+```
+
 
 ②`<?=  ?>`:<br> 
 `<?php echo ?>`の省略形であり、htmlの中に部分的にPHPの変数を埋め込みたい時に便利な書き方です。
