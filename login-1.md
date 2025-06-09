@@ -243,20 +243,20 @@ if (!isset($_POST['userId']) || !isset($_POST['password']) || !isset($_POST['use
     $result = '未入力の項目があります。全ての項目を入力してください。';
 }else{
 
-// 送られてきたデータを受けとる
-$userId   = $_POST['userId'];
-$password = $_POST['password'];
-$userName = $_POST['userName'];
+    // 送られてきたデータを受けとる
+    $userId   = $_POST['userId'];
+    $password = $_POST['password'];
+    $userName = $_POST['userName'];
 
-// Userクラスを利用するため、user.phpクラスを読み込む(穴埋め)
-require_once
-// Userオブジェクトを生成する(穴埋め)
-$user = 
-// ユーザー登録処理を行うsignUpメソッドを呼び出し、その結果のメッセージを受け取る((穴埋め)
-$result = 
+    // Userクラスを利用するため、user.phpクラスを読み込む(穴埋め)
+    require_once
+    // Userオブジェクトを生成する(穴埋め)
+    $user = 
+    // ユーザー登録処理を行うsignUpメソッドを呼び出し、その結果のメッセージを受け取る((穴埋め)
+    $result = 
 
-// 共通するデータ・関数を定義したPHPファイルを読み込む
-require_once  __DIR__  .  '/util.php';
+    // 共通するデータ・関数を定義したPHPファイルを読み込む
+    require_once  __DIR__  .  '/util.php';
 }
 ?>
 
