@@ -154,7 +154,7 @@ class DbData
     }
 
     // SELECT文実行用のqueryメソッド ・・・このメソッドはユーザー定義関数
-    protected function query(string $sql, array $array_params): PDOStatement | false
+    protected function query(string $sql, array $array_params): PDOStatement
     {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($array_params);
