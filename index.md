@@ -1,3 +1,3 @@
 # ログイン認証
 
-[こちらのページ]()から、ソースコードを`C:¥web_app_dev`へcloneしてください。
+[こちらのページ](https://classroom.github.com/a/Pztdnk0D)から、ソースコードを`C:¥web_app_dev`へcloneしてください。
