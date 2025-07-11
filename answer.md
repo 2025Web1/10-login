@@ -46,21 +46,17 @@ class User extends DbData
 
 ```php
 <?php
-// バリデーション
 if (empty(trim($_POST['userId'])) || empty(trim($_POST['password'])) || empty(trim($_POST['userName']))) {
     $result = '未入力の項目があります。全ての項目を入力してください。';
 }else{
-    // 送られてきたデータを受けとる																		
     $userId   = $_POST['userId'];
     $password = $_POST['password'];
     $userName  = $_POST['userName'];
 
-    // Userオブジェクトを生成し、 ユーザー登録処理を行うsignUp( )メソッドを呼び出し、その結果のメッセージを受け取る																		
     require_once  __DIR__  .  '/classes/user.php';
     $user = new User();
     $result = $user->signUp($userId, $password, $userName);
 
-    // 共通するデータ・関数を定義したPHPファイルを読み込む								
     require_once  __DIR__  .  '/util.php';
 }
 ?>
@@ -79,7 +75,6 @@ if (empty(trim($_POST['userId'])) || empty(trim($_POST['password'])) || empty(tr
     <div id="main">
         <?php
 
-        // エラーがなく、正しく登録された場合
         if ($result === '') {
         ?>
             <h2>ユーザー登録が完了しました</h2>
@@ -100,7 +95,7 @@ if (empty(trim($_POST['userId'])) || empty(trim($_POST['password'])) || empty(tr
             </table>
             <p><a href='login.html'>ログインページへ</a></p>
         <?php
-            // 登録に失敗した場合
+        
         } else {
         ?>
             <h2>登録に失敗しました</h2>
@@ -120,23 +115,16 @@ if (empty(trim($_POST['userId'])) || empty(trim($_POST['password'])) || empty(tr
 
 ```php
 <?php
-//　バリデーション
 if (empty(trim($_POST['userId'])) || empty(trim($_POST['password']))) {
     $error = '未入力の項目があります。全ての項目を入力してください。';
 }else{
-    // 送られてきたユーザーIDとパスワードを受け取る													
     $userId   = $_POST['userId'];
     $password = $_POST['password'];
 
-    // ---Userオブジェクトを生成し、「authUser()メソッド」を呼び出し、認証結果を受け取る													
-    // user.phpを読み込む
     require_once __DIR__  .  '/classes/user.php';
-    // UserクラスからUserオブジェクトを生成する				
     $user = new User();
-    // authUser()メソッドを呼び出し、認証結果を受け取る		
     $result = $user->authUser($userId, $password);
 
-    // ログインに成功した場合、セッションに認証情報を保存し、welcome.phpにリダイレクトする										
     if ($result) {
         session_start();
         $_SESSION['login'] = 1;
@@ -182,7 +170,6 @@ if (isset($_SESSION['login']) == false) {
     exit();
 }
 
-// 共通するデータ・関数を定義したPHPファイルを読み込む								
 require_once  __DIR__  .  '/util.php';
 ?>
 
