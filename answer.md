@@ -35,7 +35,9 @@ class User extends DbData
 
     public function authUser(string $userId, string $password): array|false
     {
-        $sql = 'SELECT * FROM users WHERE userId = ? AND password = ?';
+        // 補習用穴埋め 以下のSQL文を完成させてください。
+        // ヒント: ユーザーIDとパスワードを使って、usersテーブルからユーザー情報を取得します。
+        $sql = '                                                ';
         $stmt = $this->query($sql, [$userId, $password]);
         return $stmt->fetch();
     }
